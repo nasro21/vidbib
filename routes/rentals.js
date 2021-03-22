@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
   if (!movie) return res.status(400).send("Invalid movie");
 
   if (movie.numberInStock === 0)
-    return res.status(400).send(" Movie not found");
+    return res.status(400).send(" Movie not in Stock");
 
   let rental = new Rental({
     customer: {
@@ -56,39 +56,21 @@ router.post("/", async (req, res) => {
     res.status(500).send("Something failed");
   }
 });
-// Put a Rental
-router.put("/:id", async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(404).send(error.details[0].message);
-
-  const movie = await Movie.findByIdAndUpdate(
-    req.params.id,
-    {
-      title: req.body.title,
-      numberInStock: req.body.numberInStock,
-      dailyrRentalRate: req.body.dailyrRentalRate,
-    },
-    { new: true }
-  );
-  if (!movie) return res.status(404).send("There is no genre with this id");
-
-  res.send(movie);
-});
 
 // Delete a Rental
 router.delete("/:id", async (req, res) => {
-  const movie = await Movie.findByIdAndRemove(req.params.id);
-  if (!movie) return res.status(404).send("there is no genre with this ID");
+  const rental = await Rental.findByIdAndRemove(req.params.id);
+  if (!rental) return res.status(404).send("there is no rental with this ID");
 
   res.send(movie);
 });
 
 // Get specific Rental
 router.get("/:id", async (req, res) => {
-  const movie = await Movie.findById(req.params.id);
+  const rental = await Rental.findById(req.params.id);
 
-  if (!movie) return res.status(404).send("there is no genre with this ID");
-  res.send(movie);
+  if (!rental) return res.status(404).send("there is no rental with this ID");
+  res.send(rental);
 });
 
 module.exports = router;
