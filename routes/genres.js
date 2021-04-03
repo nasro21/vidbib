@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { Genre, validate } = require("../models/genre");
-
+const auth = require("../middleware/auth");
 // get all Genres
 router.get("/", async (req, res) => {
   const genres = await Genre.find().sort("name");
@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
 });
 
 // post a Genre
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const genre = new Genre({

@@ -17,7 +17,11 @@ const config = require("config");
 // }
 
 mongoose
-  .connect("mongodb://localhost/vidbib")
+  .connect("mongodb://localhost/vidbib", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
   .then(() => console.log("Connected to Mongodb"))
   .catch((err) => console.error("Could not connect to MongoDb"));
 

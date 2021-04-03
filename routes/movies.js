@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const { Genre } = require("../models/genre");
 const { Movie, validate } = require("../models/movie");
+const auth = require("../middleware/auth");
 
 // Get all Movies
 router.get("/", async (req, res) => {
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
 });
 
 // Post a Movie
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
 

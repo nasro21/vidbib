@@ -5,6 +5,7 @@ const { Movie } = require("../models/movie");
 const { Customer } = require("../models/customer");
 const { Rental, validate } = require("../models/rental");
 const Fawn = require("fawn");
+const auth = require("../middleware/auth");
 
 Fawn.init(mongoose);
 // Get all Rentals
@@ -14,7 +15,7 @@ router.get("/", async (req, res) => {
 });
 
 // Post a Rental
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
 
