@@ -4,6 +4,17 @@ const mongoose = require("mongoose");
 const { Genre, validate } = require("../models/genre");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
+
+// Get all by Using the Async middleware function
+// const asyncMiddleware = require("../middleware/async");
+// router.get(
+//   "/",
+//   asyncMiddleware(async (req, res) => {
+//     const genres = await Genre.find().sort("name");
+//     res.send(genres);
+//   })
+// );
+
 // get all Genres
 router.get("/", async (req, res) => {
   const genres = await Genre.find().sort("name");
